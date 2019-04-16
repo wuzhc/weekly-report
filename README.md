@@ -26,7 +26,7 @@ SINCE_DAY=5
 REPOSITORIES=/data/wwwroot/php/food
 
 # 报告人名字
-USERNAME=吴增创
+USERNAME=吴小弟
 ```
 
 ## 执行
