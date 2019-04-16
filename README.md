@@ -14,7 +14,7 @@ composer install -vvv
 ```
 
 ## 配置
-复制一份`.env.example`到`.env`
+复制一份`.env.example`到`.env`,修改`.env`配置文件
 ```bash
 # git提交用户
 AUTHOR=wuzhc
