@@ -64,13 +64,13 @@ class Parser
 
         // 字符串过滤器
         $filter = [
-            // 'test'
+            'test'
         ];
 
         // 正则过滤器
         $regFilter = [
             '/^Merge branch/', // 去除合并信息
-            '/^[a-zA-Z\s]+$/'  // 去除全英文注释,或者加一个英文翻译api,按个人需求
+            '/^[a-zA-Z\s\.]+$/'  // 去除全英文注释,或者加一个英文翻译api,按个人需求
         ];
 
         /** @var \Gitter\Model\Commit\Commit $commit */
