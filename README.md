@@ -27,6 +27,9 @@ REPOSITORIES=/data/wwwroot/php/food
 
 # 报告人名字
 USERNAME=吴小弟
+
+# 报告生成存放目录,默认为当前根目录
+SAVE_DIR=.
 ```
 
 ## 执行
