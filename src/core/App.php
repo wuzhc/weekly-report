@@ -30,6 +30,7 @@ class App
     {
         $dotenv = Dotenv::create(dirname(dirname(__DIR__)));
         $dotenv->load();
+        $this->checkEnv();
         $this->registerExceptionHandler();
     }
 
@@ -56,20 +57,23 @@ class App
             $this->help();
         }
 
+        $app = null;
         $data = (new Parser())->exec();
         switch ($val) {
             case 'excel':
-                (new ExcelOutput($data))->export();
+                $app = new ExcelOutput($data);
                 break;
             case 'text':
-                (new TextOutput($data))->export();
+                $app = new TextOutput($data);
                 break;
             case 'console':
-                (new ConsoleOutput($data))->export();
+                $app = new ConsoleOutput($data);
                 break;
             default:
                 $this->help();
         }
+
+        $app->export();
     }
 
     protected function help()
@@ -78,5 +82,33 @@ class App
         echo '      php index.php -m=excel|text|console';
         echo PHP_EOL;
         exit;
+    }
+
+    protected function checkEnv()
+    {
+        $author = getenv('AUTHOR');
+        if (!$author) {
+            Response::error('AUTHOR未定义');
+        }
+
+        $sinceDate = getenv('SINCE_DAY');
+        if (!$sinceDate) {
+            Response::error('SINCE_DAY未定义');
+        }
+
+        $repositories = getenv('REPOSITORIES');
+        if (!$repositories) {
+            Response::error('REPOSITORIES未定义');
+        }
+
+        $username = getenv('USERNAME');
+        if (!$username) {
+            Response::error('USERNAME未定义');
+        }
+
+        $saveDir = getenv('SAVE_DIR');
+        if (!$saveDir) {
+            Response::error('SAVE_DIR未定义');
+        }
     }
 }

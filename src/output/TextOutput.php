@@ -18,8 +18,11 @@ class TextOutput extends Output
      */
     public function export()
     {
-        $this->target = $this->target ?: getenv('USERNAME') . '_' . date('W', time()) . '周' . '_工作报告.txt';
-        $fp = fopen($this->target, 'a+');
+        $target = getenv('SAVE_DIR');
+        $target = $target ? rtrim($target, '/') . '/' : dirname(dirname(__DIR__)) . '/';
+        $target .= getenv('USERNAME') . '_' . date('W', time()) . '周' . '_工作报告.txt';
+
+        $fp = fopen($target, 'a+');
         if (!$fp) {
             Response::error('目标文件生成失败');
         }
@@ -58,6 +61,6 @@ class TextOutput extends Output
         }
 
         fclose($fp);
-        echo '导出完毕,文件保存在' . dirname(dirname(__DIR__)) . '/' . $this->target . PHP_EOL;
+        echo '导出完毕,文件保存在' . $target . PHP_EOL;
     }
 }

@@ -10,7 +10,6 @@ namespace gitter\output;
 
 
 use gitter\core\DataItem;
-use gitter\core\Response;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -25,7 +24,10 @@ class ExcelOutput extends Output
     public function export()
     {
         $this->template = $this->template ?: __DIR__ . '/template/default.xlsx';
-        $this->target = $this->target ?: getenv('USERNAME') . '_' . date('W', time()) . '周' . '_工作报告.xlsx';
+
+        $target = getenv('SAVE_DIR');
+        $target = $target ? rtrim($target, '/') . '/' : dirname(dirname(__DIR__)) . '/';
+        $target .= getenv('USERNAME') . '_' . date('W', time()) . '周' . '_工作报告.xlsx';
 
         echo '正在导出中...' . PHP_EOL;
 
@@ -34,6 +36,7 @@ class ExcelOutput extends Output
         /** @var DataItem $item */
         foreach ($this->source as $item) {
             $date = date('w', strtotime($item->date));
+            $date = $date == 0 ? 7 : $date;
             $data[$date][] = $item->message;
         }
 
@@ -47,10 +50,13 @@ class ExcelOutput extends Output
             $line = count($value);
             if ($line > 2) {
                 $spreadsheet->getActiveSheet()->getRowDimension($pos)->setRowHeight(40 + ($line - 2) * 10);
+            } elseif ($line == 2) {
+                $spreadsheet->getActiveSheet()->getRowDimension($pos)->setRowHeight(30);
             }
 
             $value = implode(PHP_EOL, $value);
             $worksheet->getCell('B' . $pos)->setValue($value);
+            $worksheet->getCell('H'. $pos)->setValue('已完成');
         }
 
         // 设置头部字体
@@ -66,9 +72,9 @@ class ExcelOutput extends Output
         $this->setCellBg($worksheet, ['A4', 'B4', 'H4', 'M4', 'A2', 'A19', 'B19', 'A22', 'A29']);
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($this->target);
+        $writer->save($target);
 
-        echo '导出完毕,文件保存在' . dirname(dirname(__DIR__)) . '/' . $this->target . PHP_EOL;
+        echo '导出完毕,文件保存在' . $target . PHP_EOL;
 
         $spreadsheet->disconnectWorksheets();
         unset($spreadsheet);

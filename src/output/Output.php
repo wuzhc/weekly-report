@@ -20,10 +20,4 @@ abstract class Output
     {
         $this->source = $data;
     }
-
-    public function setTarget($path)
-    {
-        $this->target = $path;
-        return $this;
-    }
 }
