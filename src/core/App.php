@@ -94,6 +94,10 @@ class App
         $sinceDate = getenv('SINCE_DAY');
         if (!$sinceDate) {
             Response::error('SINCE_DAY未定义');
+        } else {
+            if (!is_numeric($sinceDate)) {
+                Response::error($sinceDate . '不是一个整数');
+            }
         }
 
         $repositories = getenv('REPOSITORIES');
@@ -109,6 +113,10 @@ class App
         $saveDir = getenv('SAVE_DIR');
         if (!$saveDir) {
             Response::error('SAVE_DIR未定义');
+        } else {
+            if (!is_dir($saveDir)) {
+                Response::error($saveDir  . '目录不存在');
+            }
         }
     }
 }
