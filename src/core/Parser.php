@@ -20,22 +20,8 @@ class Parser
     public function __construct()
     {
         $this->repositories = explode(',', getenv('REPOSITORIES'));
-        if (!$this->repositories) {
-            Response::error('请先定义REPOSITORIES');
-        }
-
         $this->author = getenv('AUTHOR');
-        if (!$this->author) {
-            Response::error('请先定义AUTHOR');
-        }
-
-        $since = getenv('SINCE_DAY');
-        if (!$since) {
-            Response::error('请先定义SINCE');
-        } else {
-            $since .=' days ago';
-        }
-
+        $since = getenv('SINCE_DAY') . ' days ago';
         $this->command = sprintf('--author=%s --since="%s" --all', $this->author, $since);
     }
 
@@ -53,14 +39,19 @@ class Parser
 
     public function getRepositoryCommits($path)
     {
-        echo '正在获取' . $path . '仓库commit日志...' . PHP_EOL;
-
-        $client = new Client;
-        $repository = $client->getRepository($path);
-        $commits = $repository->getCommits($this->command);
-
         // 结果集
         $res = [];
+
+        echo '正在获取' . $path . '仓库commit日志...' . PHP_EOL;
+
+        try {
+            $client = new Client;
+            $repository = $client->getRepository($path);
+            $commits = $repository->getCommits($this->command);
+        } catch (\Exception $e) {
+            echo $e->getMessage() . "\r\n\r\n";
+            return $res;
+        }
 
         // 字符串过滤器
         $filter = [
