@@ -20,7 +20,7 @@ class TextOutput extends Output
     {
         $target = getenv('SAVE_DIR');
         $target = $target ? rtrim($target, '/') . '/' : dirname(dirname(__DIR__)) . '/';
-        $target .= getenv('USERNAME') . '_' . date('W', time()) . '周' . '_工作报告.txt';
+        $target .= getenv('USERNAME') . '_' . date('W', strtotime(getenv('SINCE_DAY'))) . '周' . '_工作报告.txt';
 
         $fp = fopen($target, 'a+');
         if (!$fp) {

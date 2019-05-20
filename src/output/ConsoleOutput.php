@@ -17,7 +17,7 @@ class ConsoleOutput extends Output
     public function export()
     {
         echo '---------------------------------------------------------------' . PHP_EOL;
-        echo '--------------------- ' . $this->source[0]->author . '的报告 ----------------------------' . PHP_EOL;
+        echo '--------------------- ' . $this->source[0]->author . '第'.date('W',strtotime(getenv('SINCE_DAY'))).'周报告 ----------------------------' . PHP_EOL;
         echo '---------------------------------------------------------------' . PHP_EOL;
 
         if (!$this->source) {

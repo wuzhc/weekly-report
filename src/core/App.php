@@ -91,13 +91,27 @@ class App
             Response::error('AUTHOR未定义');
         }
 
-        $sinceDate = getenv('SINCE_DAY');
-        if (!$sinceDate) {
+        $startDate = getenv('SINCE_DAY');
+        if (!$startDate) {
             Response::error('SINCE_DAY未定义');
         } else {
-            if (!is_numeric($sinceDate)) {
-                Response::error($sinceDate . '不是一个整数');
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $startDate)) {
+                Response::error('SINCE_DAY格式错误,你的格式为' . $startDate . ',正确格式为YYYY-mm-dd');
             }
+        }
+
+        $endDate = getenv('UNTIL_DAY');
+        if (!$endDate) {
+            Response::error('UNTIL_DAY未定义');
+        } else {
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $endDate)) {
+                Response::error('UNTIL_DAY格式错误,你的格式为' . $endDate . ',正确格式为YYYY-mm-dd');
+            }
+        }
+
+        $since = date('d', strtotime($endDate)) - date('d', strtotime($startDate));
+        if ($since <= 0) {
+            Response::error('开始时间和结束时间范围错误');
         }
 
         $repositories = getenv('REPOSITORIES');
@@ -115,7 +129,7 @@ class App
             Response::error('SAVE_DIR未定义');
         } else {
             if (!is_dir($saveDir)) {
-                Response::error($saveDir  . '目录不存在');
+                Response::error($saveDir . '目录不存在');
             }
         }
     }

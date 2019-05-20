@@ -27,7 +27,7 @@ class ExcelOutput extends Output
 
         $target = getenv('SAVE_DIR');
         $target = $target ? rtrim($target, '/') . '/' : dirname(dirname(__DIR__)) . '/';
-        $target .= getenv('USERNAME') . '_' . date('W', time()) . '周' . '_工作报告.xlsx';
+        $target .= getenv('USERNAME') . '_' . date('W', strtotime(getenv('SINCE_DAY'))) . '周' . '_工作报告.xlsx';
 
         echo '正在导出中...' . PHP_EOL;
 
@@ -89,8 +89,8 @@ class ExcelOutput extends Output
         $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
         $richText->createText('工作周报（'.getenv('USERNAME').'）      ');
         $payable = $richText->createTextRun('日期：' . date('Y年m月d日',
-                strtotime('-' . intval(getenv('SINCE_DAY')) . ' days')) . ' --- ' . date('Y年m月d日', time()) . '   第'
-            . (date('W', time())) . '周');
+                strtotime(getenv('SINCE_DAY'))) . ' --- ' . date('Y年m月d日', strtotime(getenv('UNTIL_DAY'))) . '   第'
+            . (date('W', strtotime(getenv('SINCE_DAY')))) . '周');
 
         $payable->getFont()->setBold(true);
         $payable->getFont()->setItalic(true);

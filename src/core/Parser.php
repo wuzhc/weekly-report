@@ -21,8 +21,9 @@ class Parser
     {
         $this->repositories = explode(',', getenv('REPOSITORIES'));
         $this->author = getenv('AUTHOR');
-        $since = getenv('SINCE_DAY') . ' days ago';
-        $this->command = sprintf('--author=%s --since="%s" --all', $this->author, $since);
+        $start = getenv('SINCE_DAY');
+        $end = getenv('UNTIL_DAY');
+        $this->command = sprintf('--author="%s" --since="%s" --until="%s" --all', $this->author, $start, $end);
     }
 
     public function exec()
