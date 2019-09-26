@@ -23,7 +23,7 @@ AUTHOR=wuzhc
 SINCE_DAY=5
 
 # 仓库目录,多个仓库目录逗号隔开
-REPOSITORIES=/data/wwwroot/php/food
+REPOSITORIES=/xxx
 
 # 报告人名字
 USERNAME=吴小弟
@@ -40,3 +40,4 @@ php index.php -m=excel|text|console
 - excel 导出到excel,默认以`weekly-report/src/output/template/default.xlsx`为模板文件
 - text 导出到txt文本文件
 - console 直接输出到控制台
+
