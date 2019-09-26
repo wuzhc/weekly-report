@@ -109,7 +109,7 @@ class App
             }
         }
 
-        $since = date('d', strtotime($endDate)) - date('d', strtotime($startDate));
+        $since = (strtotime($endDate) - strtotime($startDate)) / (24 * 3600);
         if ($since <= 0) {
             Response::error('开始时间和结束时间范围错误');
         }

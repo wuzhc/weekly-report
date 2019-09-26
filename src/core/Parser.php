@@ -22,7 +22,7 @@ class Parser
         $this->repositories = explode(',', getenv('REPOSITORIES'));
         $this->author = getenv('AUTHOR');
         $start = getenv('SINCE_DAY');
-        $end = getenv('UNTIL_DAY');
+        $end = date('Y-m-d', strtotime(getenv('UNTIL_DAY')) + 24*3600);
         $this->command = sprintf('--author="%s" --since="%s" --until="%s" --all', $this->author, $start, $end);
     }
 
